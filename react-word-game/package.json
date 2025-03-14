@@ -18,6 +18,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "https://api.frontendexpert.io"
+,
   "eslintConfig": {
     "extends": [
       "react-app",
