@@ -14,6 +14,11 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [emoji, setEmoji] = useState("");
 
+  const playSound = (sound) => {
+    const audio = new Audio(`/sounds/${sound}.mp3`);
+    audio.play();
+  };
+
 
   useEffect(() => {
     const fetchWord = async () => {
@@ -51,11 +56,13 @@ function App() {
         if (isCorrect) {
           setIsGameOver(true);
           setEmoji("🎉");
+          playSound("win");
         }
 
         if (newGuesses.every(guess => guess != null)) {
           setGameEnded(true);
           setEmoji("😢");
+          playSound("lose");
         }
 
         const newUsedKeys = { ...usedKeys };
