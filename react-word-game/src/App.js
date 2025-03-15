@@ -4,10 +4,11 @@ import "./App.css";
 const API_URL = "/api/fe/wordle-words";
 const GUESS_LENGTH = 5;
 function App() {
-  const [solution, setSolution] = useState("hello");
+  const [solution, setSolution] = useState("");
   const [guesses, setGuesses] = useState(Array(6).fill(null));
   const[currentGuess, setCurrentGuess] = useState('');
   const[isGameOver, setIsgameOver] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
 
   useEffect(()=> {
    const handleType = (event)=> {
@@ -30,6 +31,10 @@ function App() {
        if(isCorrect){
         setIsgameOver(true);
        }
+
+       if (newGuesses.every(guess => guess != null)) {
+        setGameEnded(true); 
+      }
     }
 
     if(event.key ==='Backspace')
@@ -53,7 +58,7 @@ function App() {
 
   window.addEventListener('keydown', handleType);
   return () => window.removeEventListener('keydown',handleType);
-  },[currentGuess, isGameOver, solution, guesses]);
+  },[currentGuess, isGameOver, solution, guesses, gameEnded]);
 
   useEffect(() => {
     const fetchWord = async () => {
@@ -61,7 +66,7 @@ function App() {
         const response = await fetch(API_URL);
         const words = await response.json();
         const randomWord = words[Math.floor(Math.random() * words.length)];
-        //setSolution(randomWord);
+        setSolution(randomWord.toLowerCase());
       } catch (error) {
         console.error("Error fetching words:", error);
       }
@@ -72,7 +77,7 @@ function App() {
 
   return (
     <div className="board">
-      {guesses.map((guess, i)=>{
+       {guesses.map((guess, i)=>{
         const isCurrentGuess = i === guesses.findIndex(val => val == null);
         return( <Line 
         guess = {isCurrentGuess? currentGuess: guess ?? ''}
@@ -81,6 +86,12 @@ function App() {
         />
       );
       })}
+
+{gameEnded && !isGameOver && (
+        <div className="game-over">
+          <p>Game Over! The correct word was: {solution}</p>
+        </div>
+      )}
     </div>
   );
   }
