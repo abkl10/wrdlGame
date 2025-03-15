@@ -1,3 +1,50 @@
+:root {
+  background-color: #ffffff;
+  --text-color: #000000;
+  --tile-border-color: #d3d6da;
+  --tile-background-color: #ffffff;
+  --correct-color: #6aaa64;
+  --close-color: #c9b458;
+  --incorrect-color: #787c7e;
+  --keyboard-key-color: #d3d6da;
+  --keyboard-key-text-color: #000000;
+}
+
+.dark {
+  --background-color: #121213;
+  --text-color: #ffffff;
+  --tile-border-color: #3a3a3c;
+  --tile-background-color: #121213;
+  --correct-color: #538d4e;
+  --close-color: #b59f3b;
+  --incorrect-color: #3a3a3c;
+  --keyboard-key-color: #818384;
+  --keyboard-key-text-color: #ffffff;
+}
+
+.app {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  min-width: 200vh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: var(--keyboard-key-color);
+  color: var(--keyboard-key-text-color);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f3f3f3;

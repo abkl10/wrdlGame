@@ -13,6 +13,19 @@ function App() {
   const [usedKeys, setUsedKeys] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [emoji, setEmoji] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    localStorage.setItem("theme", !isDarkMode ? "dark" : "light");
+  };
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setIsDarkMode(true);
+    }
+  }, []);
 
   const playSound = (sound) => {
     const audio = new Audio(`/sounds/${sound}.mp3`);
@@ -104,61 +117,68 @@ function App() {
   };
 
   return (
-    <div className="board">
-      <div className="header">
-        <h1>Wordle</h1>
-        <p>Guess the hidden word in 6 tries</p>
-      </div>
-      {isLoading ? (
-        <div className="loading">Loading...</div>
-      ) : (
-        <>
-          {guesses.map((guess, i) => {
-            const isCurrentGuess = i === guesses.findIndex(val => val == null);
-            return (
-              <Line
-                key={i}
-                guess={isCurrentGuess ? currentGuess : guess ?? ''}
-                isFinal={!isCurrentGuess && guess != null}
-                solution={solution}
-              />
-            );
-          })}
-          
-          {gameEnded && !isGameOver && (
-            <div className="game-over">
-              <p>Game Over! The correct word was:<b className="red"> {solution}</b>{emoji && <div className="emoji-reaction">{emoji}</div>}</p>
-              <button className="restart-button" onClick={handleRestart}>Restart</button>
-            </div>
-          )}
-          {isGameOver && (
-            <div className="congratulations">
-              <p><b>Congratulations!</b> You guessed the word correctly!</p>
-              {emoji && <div className="emoji-reaction">{emoji}</div>}
-              <button className="restart-button" onClick={handleRestart}>Restart</button>
-            </div>
-          )}
-
-          <div className="keyboard">
-            {['qwertyuiop', 'asdfghjkl', 'zxcvbnm'].map((row, i) => (
-              <div key={i} className="keyboard-row">
-                {row.split('').map((key) => (
-                  <button
-                    key={key}
-                    className={`keyboard-key ${usedKeys[key] || ''}`}
-                  >
-                    {key}
-                  </button>
-                ))}
+    <div className={`app ${isDarkMode ? "dark" : "light"}`}>
+      <button className="theme-toggle" onClick={toggleTheme}>
+        {isDarkMode ? "🌞 Light Mode" : "🌙 Dark Mode"}
+      </button>
+      <div className="board">
+        <div className="header">
+          <h1>Wordle</h1>
+          <p>Guess the hidden word in 6 tries</p>
+        </div>
+        {isLoading ? (
+          <div className="loading">Loading...</div>
+        ) : (
+          <>
+            {guesses.map((guess, i) => {
+              const isCurrentGuess = i === guesses.findIndex(val => val == null);
+              return (
+                <Line
+                  key={i}
+                  guess={isCurrentGuess ? currentGuess : guess ?? ''}
+                  isFinal={!isCurrentGuess && guess != null}
+                  solution={solution}
+                />
+              );
+            })}
+  
+            {gameEnded && !isGameOver && (
+              <div className="game-over">
+                <p>Game Over! The correct word was: <b className="red">{solution}</b></p>
+                {emoji && <div className="emoji-reaction">{emoji}</div>}
+                <button className="restart-button" onClick={handleRestart}>Restart</button>
               </div>
-            ))}
-          </div>
-        </>
-      )}
+            )}
+  
+            {isGameOver && (
+              <div className="congratulations">
+                <p><b>Congratulations!</b> You guessed the word correctly!</p>
+                {emoji && <div className="emoji-reaction">{emoji}</div>}
+                <button className="restart-button" onClick={handleRestart}>Restart</button>
+              </div>
+            )}
+  
+            <div className="keyboard">
+              {['qwertyuiop', 'asdfghjkl', 'zxcvbnm'].map((row, i) => (
+                <div key={i} className="keyboard-row">
+                  {row.split('').map((key) => (
+                    <button
+                      key={key}
+                      className={`keyboard-key ${usedKeys[key] || ''}`}
+                    >
+                      {key}
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
-
+  
 export default App;
 
 function Line({ guess, isFinal, solution }) {
