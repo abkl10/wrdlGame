@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 //const API_URL = "/api/fe/wordle-words";
-const API_URL ="https://api.frontendexpert.io/api/fe/wordle-words";
+const API_URL = "https://cors-anywhere.herokuapp.com/https://api.frontendexpert.io/api/fe/wordle-words";
 const GUESS_LENGTH = 5;
 
 function App() {
