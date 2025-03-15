@@ -131,3 +131,26 @@ body {
 .red{
   color: red;
 }
+
+.emoji-reaction {
+  font-size: 3rem;
+  margin-top: 20px;
+  animation: bounce 0.5s ease-in-out;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.congratulations {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  color: #333;
+  text-align: center;
+}

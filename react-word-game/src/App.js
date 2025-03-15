@@ -12,6 +12,8 @@ function App() {
   const [gameEnded, setGameEnded] = useState(false);
   const [usedKeys, setUsedKeys] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [emoji, setEmoji] = useState("");
+
 
   useEffect(() => {
     const fetchWord = async () => {
@@ -48,13 +50,14 @@ function App() {
         const isCorrect = solution === currentGuess;
         if (isCorrect) {
           setIsGameOver(true);
+          setEmoji("🎉");
         }
 
         if (newGuesses.every(guess => guess != null)) {
           setGameEnded(true);
+          setEmoji("😢");
         }
 
-        // Update used keys
         const newUsedKeys = { ...usedKeys };
         currentGuess.split('').forEach((letter) => {
           if (solution.includes(letter)) {
@@ -114,12 +117,21 @@ function App() {
               />
             );
           })}
+          
           {gameEnded && !isGameOver && (
             <div className="game-over">
-              <p>Game Over! The correct word was:<b className="red"> {solution}</b></p>
+              <p>Game Over! The correct word was:<b className="red"> {solution}</b>{emoji && <div className="emoji-reaction">{emoji}</div>}</p>
               <button className="restart-button" onClick={handleRestart}>Restart</button>
             </div>
           )}
+          {isGameOver && (
+            <div className="congratulations">
+              <p><b>Congratulations!</b> You guessed the word correctly!</p>
+              {emoji && <div className="emoji-reaction">{emoji}</div>}
+              <button className="restart-button" onClick={handleRestart}>Restart</button>
+            </div>
+          )}
+
           <div className="keyboard">
             {['qwertyuiop', 'asdfghjkl', 'zxcvbnm'].map((row, i) => (
               <div key={i} className="keyboard-row">
